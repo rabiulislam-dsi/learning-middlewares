@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 //require routers
 const indexRouter = require("./routes/index");
-const studnetsRouter = require("./routes/students");
+const studentsRouter = require("./routes/students");
 const aboutRouter = require("./routes/about");
 
 const app = express();
@@ -16,6 +16,13 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 
 //use middlewares
+app.use(function(req, res, next) {
+  console.log(`Request => ${req.method} ${req.url} ${res.status.statusCode}`);
+  req.on("end", () => {
+    console.log(res.status.statusCode);
+  });
+  next();
+});
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -24,8 +31,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //use route handlers
 app.use("/", indexRouter);
-app.use("/students", studnetsRouter);
+app.use("/students", studentsRouter);
 app.use("/about", aboutRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
