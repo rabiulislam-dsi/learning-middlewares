@@ -1,0 +1,11 @@
+<ul>
+    {{#each students}}
+    <ul>
+        <li>{{ this.student_id}}</li>
+        <li>{{ this.student_name}}</li>
+        <li>{{ this.student_grade}}</li>
+        <li>{{ this.student_age}}</li>
+        <li><img src={{ this.student_image_path}} alt=""></li>
+    </ul>
+    {{/each}}
+</ul>
