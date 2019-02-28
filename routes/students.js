@@ -5,7 +5,7 @@ const createError = require("http-errors");
 var multer = require("multer");
 var upload = multer({ dest: "public/images/uploads/" });
 /* GET users listing. */
-router.get("/getall", async function(req, res, next) {
+router.get("/getall", function(req, res, next) {
   knex("students")
     .orderBy("student_id", "desc")
     .then(function(students) {
@@ -17,11 +17,11 @@ router.get("/getall", async function(req, res, next) {
     });
 });
 
-router.get("/addnew", async function(req, res, next) {
+router.get("/addnew", function(req, res, next) {
   res.render("newstudent");
 });
 
-router.post("/addnew", upload.single("image"), async function(req, res, next) {
+router.post("/addnew", upload.single("image"), function(req, res, next) {
   console.log(req.body);
   console.log(req.file);
   let newStudent = {
@@ -40,7 +40,7 @@ router.post("/addnew", upload.single("image"), async function(req, res, next) {
     });
 });
 
-router.get("/edit/:id", async function(req, res, next) {
+router.get("/edit/:id", function(req, res, next) {
   knex("students")
     .where("student_id", req.params.id)
     .then(function(students) {
@@ -56,11 +56,7 @@ router.get("/edit/:id", async function(req, res, next) {
     });
 });
 
-router.post("/edit/:id", upload.single("image"), async function(
-  req,
-  res,
-  next
-) {
+router.post("/edit/:id", upload.single("image"), function(req, res, next) {
   let updatedStudent = {
     student_name: req.body.name,
     student_grade: req.body.grade,
@@ -88,7 +84,7 @@ router.post("/edit/:id", upload.single("image"), async function(
     });
 });
 
-router.get("/delete/:id", async function(req, res, next) {
+router.get("/delete/:id", function(req, res, next) {
   knex("students")
     .where("student_id", req.params.id)
     .del()
@@ -100,7 +96,7 @@ router.get("/delete/:id", async function(req, res, next) {
     });
 });
 
-router.get("/details/:id", async function(req, res, next) {
+router.get("/details/:id", function(req, res, next) {
   knex("students")
     .where("student_id", req.params.id)
     .then(function(students) {

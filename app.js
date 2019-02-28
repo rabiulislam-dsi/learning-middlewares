@@ -34,8 +34,16 @@ app.use("/about", aboutRouter);
 // error handler middleware
 app.use(function(err, req, res, next) {
   console.log(err);
-  res.status(err.status);
-  res.render("error", { error: err });
+  let reqHeaders = req.headers.accept.split(",");
+  if (reqHeaders.includes("*/*") || reqHeaders.includes("text/html")) {
+    res.setHeader("content-type", "text/html");
+    res.status(err.status);
+    res.render("error", { error: err });
+  } else {
+    res.setHeader("content-type", "application/json");
+    res.status(err.status);
+    res.send({ error: err });
+  }
 });
 
 module.exports = app;
